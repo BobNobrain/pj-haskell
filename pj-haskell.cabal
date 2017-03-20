@@ -3,7 +3,7 @@ version:             0.1.0.0
 -- synopsis:
 -- description:
 homepage:            https://github.com/githubuser/pj-haskell#readme
-license:             WTFPL
+license:             OtherLicense
 license-file:        LICENSE
 author:              BobNobrain
 maintainer:          imaginarius.nik@yandex.ru
@@ -16,7 +16,11 @@ cabal-version:       >=1.10
 library
   hs-source-dirs:      src
   exposed-modules:     PjFunc
+                     , PjHelp
   build-depends:       base >= 4.7 && < 5
+                     , MissingH
+                     , directory
+                     , filepath
   default-language:    Haskell2010
 
 executable pj-haskell-exe
