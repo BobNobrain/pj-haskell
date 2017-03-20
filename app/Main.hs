@@ -1,6 +1,6 @@
 module Main where
 
-import Lib
+import PjFunc
 import System.Environment
 
 main :: IO ()

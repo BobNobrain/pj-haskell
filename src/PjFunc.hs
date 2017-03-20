@@ -1,13 +1,9 @@
-module Lib
-    ( someFunc
-    , pjget
+module PjFunc
+    ( pjget
     , pjadd
     , pjrm
     , pjlist
     ) where
-
-someFunc :: IO ()
-someFunc = putStrLn "someFunc"
 
 pjget :: String -> IO ()
 pjget name = putStrLn $ "pj-get " ++ name
