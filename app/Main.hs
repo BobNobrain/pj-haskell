@@ -1,6 +1,7 @@
 module Main where
 
 import PjFunc
+import PjHelp
 import System.Environment
 
 main :: IO ()
@@ -10,22 +11,22 @@ main = do
 
 parseArgs :: [String] -> IO ()
 
-parseArgs ("add":name:path:[])          = putStrLn "Add invocation"
+parseArgs ("add":name:path:[])          = pjadd name path
 parseArgs ("add":[])                    = parseArgs ("add":"--help0":[])
 parseArgs ("add":"help":[])             = parseArgs ("add":"--help":[])
-parseArgs ("add":"--help":[])           = putStrLn "Add help invocation"
-parseArgs ("add":_)                     = putStrLn "Incorrect add invocation"
+parseArgs ("add":"--help":[])           = putStrLn $ pjhelp ["add"]
+parseArgs ("add":_)                     = pjinc ["add"]
 
-parseArgs ("rm":"--help":[])            = putStrLn "Rm help invocation"
-parseArgs ("rm":names)                  = putStrLn "Rm invocation"
-parseArgs ("rm":_)                      = putStrLn "Incorrect rm invocation"
+parseArgs ("rm":"--help":[])            = putStrLn $ pjhelp ["rm"]
+parseArgs ("rm":names)                  = pjrm names
+parseArgs ("rm":_)                      = pjinc ["rm"]
 
-parseArgs ("list":[])                   = putStrLn "List invocation"
-parseArgs ("list":"--help":[])          = putStrLn "List help invocation"
+parseArgs ("list":[])                   = pjlist
+parseArgs ("list":"--help":[])          = putStrLn $ pjhelp ["list"]
 parseArgs ("list":"help":[])            = parseArgs ("list":"--help":[])
 
-parseArgs ("--help":[])                 = putStrLn "Help invocation"
+parseArgs ("--help":[])                 = putStrLn $ pjhelp []
 
-parseArgs (name:[])                     = putStrLn "Get invocation"
+parseArgs (name:[])                     = pjget name
 
-parseArgs _                             = putStrLn "Incorrect invocation at all"
+parseArgs _                             = pjinc []
