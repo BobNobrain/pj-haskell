@@ -1,5 +1,5 @@
 module PjErr
-    ( OperationError
+    ( OperationResult (..)
     , getExitCode
     , execute
     ) where
@@ -7,13 +7,13 @@ module PjErr
 import System.Exit
 import PjHelp
 
-data OperationError
+data OperationResult
     = OpSuccess
     | OpInvalidName String
     | OpNoEntry String
     | OpInvalidCommand String
 
-getExitCode :: OperationError -> IO ExitCode
+getExitCode :: OperationResult -> IO ExitCode
 
 getExitCode OpSuccess = return ExitSuccess
 
@@ -31,5 +31,5 @@ getExitCode (OpInvalidCommand cmd) = do
     mapM_ putStrLn $ pjhelp cmd
     return $ ExitFailure 16
 
-execute :: IO OperationError -> IO ()
+execute :: IO OperationResult -> IO ()
 execute f = f >>= getExitCode >>= exitWith

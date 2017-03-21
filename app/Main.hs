@@ -2,6 +2,7 @@ module Main where
 
 import PjFunc
 import PjHelp
+import PjErr
 import System.Environment
 
 main :: IO ()
@@ -27,6 +28,6 @@ parseArgs ("list":"help":[])            = parseArgs ("list":"--help":[])
 
 parseArgs ("--help":[])                 = printHelp ""
 
-parseArgs (name:[])                     = pjget name
+parseArgs (name:[])                     = execute $ pjget name
 
 parseArgs _                             = pjinc []

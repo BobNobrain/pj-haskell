@@ -13,6 +13,8 @@ import System.Exit
 import Data.Maybe (fromJust)
 import Data.List (isPrefixOf)
 
+import PjErr
+
 -- https://www.schoolofhaskell.com/user/dshevchenko/cookbook/transform-relative-path-to-an-absolute-path
 absolutize :: String -> IO String
 absolutize aPath 
@@ -42,7 +44,7 @@ type Modifier = String -> Modification
 
 
 -- reads a single entry from pj file and prints it
-pjget :: String -> IO ()
+pjget :: String -> IO OperationResult
 pjget name = do
     if validateName name then
         let
@@ -57,9 +59,9 @@ pjget name = do
         in do
             fileH <- openConfig ReadMode
             n <- loopFile fileH $ callback name
-            return ()
+            return $ if n == 0 then OpNoEntry name else OpSuccess
     else
-        putStrLn "Invalid project name given"
+        return $ OpInvalidName name
 
 -- adds a single entry into pj file
 pjadd :: String -> String -> IO ()
