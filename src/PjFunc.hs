@@ -9,6 +9,7 @@ import System.Path.NameManip (guess_dotdot, absolute_path)
 import System.FilePath (addTrailingPathSeparator, normalise)
 import System.Directory (getHomeDirectory, doesFileExist, copyFile, removeFile)
 import System.IO hiding (readFile)
+import System.Exit
 import Data.Maybe (fromJust)
 import Data.List (isPrefixOf)
 
@@ -44,7 +45,19 @@ type Modifier = String -> Modification
 pjget :: String -> IO ()
 pjget name = do
     if validateName name then
-        putStrLn $ "pj-get " ++ name
+        let
+            callback :: String -> String -> IO ()
+            callback name str
+                | name == str_name = putStrLn str_path
+                | otherwise = return ()
+                    where
+                        w = words str
+                        str_name = head w
+                        str_path = unwords $ tail w
+        in do
+            fileH <- openConfig ReadMode
+            n <- loopFile fileH $ callback name
+            return ()
     else
         putStrLn "Invalid project name given"
 
