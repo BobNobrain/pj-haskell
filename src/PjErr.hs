@@ -1,6 +1,7 @@
 module PjErr
     ( OperationError
     , getExitCode
+    , execute
     ) where
 
 import System.Exit
@@ -29,3 +30,6 @@ getExitCode (OpInvalidCommand cmd) = do
     putStrLn $ if cmd == "" then "Incorrect usage" else "Incorrect usage of " ++ cmd
     mapM_ putStrLn $ pjhelp cmd
     return $ ExitFailure 16
+
+execute :: IO OperationError -> IO ()
+execute f = f >>= getExitCode >>= exitWith
