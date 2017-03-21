@@ -34,10 +34,10 @@ pj <cmd> --help # prints command description
 
 Available commands are:
 
-- `pj add <name> <path>` - creates a new label with name <name>, pointing to directory at <path>;
+- `pj add <name> <path>` - creates a new label with name &lt;name&gt;, pointing to directory at &lt;path&gt;;
 - `pj rm <name1>[ <name2>[ ...]]` - removes labels with given names;
 - `pj list` - lists all available labels;
-- `pj <name>` - if `pj` is added to your `~/.bashrc` as described in _Installation_, will change your working directory to the one that was labelled <name>.
+- `pj <name>` - if `pj` is added to your `~/.bashrc` as described in _Installation_, will change your working directory to the one that was labelled &lt;name&gt;.
 
 ## Additional info
 
