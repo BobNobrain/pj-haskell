@@ -64,7 +64,7 @@ pjget name = do
         return $ OpInvalidName name
 
 -- adds a single entry into pj file
-pjadd :: String -> String -> IO ()
+pjadd :: String -> String -> IO OperationResult
 pjadd name path =
     if validateName name then do
         -- check if we are modifying existing entry or adding new one
@@ -81,15 +81,16 @@ pjadd name path =
             fileH <- openConfig AppendMode
             hPutStrLn fileH (name ++ " " ++ aPath)
             hClose fileH
-            putStrLn $ "Added '" ++ name ++ "' project at path '" ++ path ++ "'"
-            putStrLn $ "(absolute is '" ++ aPath ++ "')"
-        else do
+            return $ OpSuccessMsg [ "Added '" ++ name ++ "' project at path '" ++ path ++ "'"
+                                  , "(absolute is '" ++ aPath ++ "')"
+                                  ]
+        else
             -- there was an entry, and it was modified
-            putStrLn $ "Changed '" ++ name ++ "' project to path '" ++ path ++ "'"
-            putStrLn $ "(absolute is '" ++ aPath ++ "')"
-    else do
-        putStrLn $ "Invalid project name '" ++ name ++ "'"
-        putStrLn "Project name should not contain whitespace"
+            return $ OpSuccessMsg [ "Changed '" ++ name ++ "' project to path '" ++ path ++ "'"
+                                  , "(absolute is '" ++ aPath ++ "')"
+                                  ]
+    else
+        return $ OpInvalidName name
 
 
 -- removes one or more entries from pj file

@@ -9,6 +9,7 @@ import PjHelp
 
 data OperationResult
     = OpSuccess
+    | OpSuccessMsg [String]
     | OpInvalidName String
     | OpNoEntry String
     | OpInvalidCommand String
@@ -16,6 +17,8 @@ data OperationResult
 getExitCode :: OperationResult -> IO ExitCode
 
 getExitCode OpSuccess = return ExitSuccess
+
+getExitCode (OpSuccessMsg lines) = mapM_ putStrLn lines >> return ExitSuccess
 
 getExitCode (OpInvalidName name) = do
     putStrLn $ "Invalid project name '" ++ name ++ "'"
