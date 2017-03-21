@@ -3,7 +3,7 @@ module Main where
 import PjFunc
 import PjHelp
 import PjErr
-import System.Environment
+import System.Environment (getArgs)
 
 main :: IO ()
 main = do

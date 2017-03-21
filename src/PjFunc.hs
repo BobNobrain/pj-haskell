@@ -7,9 +7,8 @@ module PjFunc
 
 import System.Path.NameManip (guess_dotdot, absolute_path)
 import System.FilePath (addTrailingPathSeparator, normalise)
-import System.Directory (getHomeDirectory, doesFileExist, copyFile, removeFile, doesDirectoryExist)
-import System.IO hiding (readFile)
-import System.Exit
+import System.Directory (getHomeDirectory, copyFile, removeFile, doesDirectoryExist)
+import System.IO
 import Data.Maybe (fromJust)
 import Data.List (isPrefixOf)
 
