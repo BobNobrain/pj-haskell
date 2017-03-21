@@ -79,13 +79,15 @@ pjadd name path =
 
 -- removes one or more entries from pj file
 pjrm :: [String] -> IO ()
-pjrm names = (modifyConfig $ modifier names) >> return ()
-    where
-        modifier :: [String] -> Modifier
-        modifier [] str = WriteUnmodified str
-        modifier names str = if name `elem` names then Skip else WriteUnmodified str
-            where
-                name = head $ words str
+pjrm names = do
+    n <- modifyConfig $ modifier names
+    putStrLn $ "Removed entries: " ++ (show n)
+        where
+            modifier :: [String] -> Modifier
+            modifier [] str = WriteUnmodified str
+            modifier names str = if name `elem` names then Skip else WriteUnmodified str
+                where
+                    name = head $ words str
 
 -- lists the pj file entries
 pjlist :: IO ()
