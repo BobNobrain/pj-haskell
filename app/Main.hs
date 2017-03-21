@@ -23,7 +23,7 @@ parseArgs ("rm":"--help":[])            = printHelp "rm"
 parseArgs ("rm":names)                  = execute $ pjrm names
 parseArgs ("rm":_)                      = pjinc ["rm"]
 
-parseArgs ("list":[])                   = pjlist
+parseArgs ("list":[])                   = execute pjlist
 parseArgs ("list":"--help":[])          = printHelp "list"
 parseArgs ("list":"help":[])            = parseArgs ("list":"--help":[])
 

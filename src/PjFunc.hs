@@ -106,14 +106,17 @@ pjrm names = do
                     name = head $ words str
 
 -- lists the pj file entries
-pjlist :: IO ()
+pjlist :: IO OperationResult
 pjlist = (openConfig ReadWriteMode) >>= loopFile' >>= showCount
     where
         loopFile' :: Handle -> IO Int
-        loopFile' h = loopFile h putStrLn
+        loopFile' h = loopFile h outputEntry
 
-        showCount :: Int -> IO ()
-        showCount n = putStrLn $ "Total entries: " ++ (show n)
+        showCount :: Int -> IO OperationResult
+        showCount n = return $ OpSuccessMsg ["Total entries: " ++ (show n)]
+
+        outputEntry :: String -> IO ()
+        outputEntry = putStrLn -- TODO
 
 loopFile :: Handle -> (String -> IO ()) -> IO Int
 loopFile = loop 0
