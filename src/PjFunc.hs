@@ -107,16 +107,24 @@ pjrm names = do
 
 -- lists the pj file entries
 pjlist :: IO OperationResult
-pjlist = (openConfig ReadWriteMode) >>= loopFile' >>= showCount
+pjlist = (outputEntry "NAME PATH") >> (openConfig ReadWriteMode) >>= loopFile' >>= showCount
     where
         loopFile' :: Handle -> IO Int
         loopFile' h = loopFile h outputEntry
 
         showCount :: Int -> IO OperationResult
-        showCount n = return $ OpSuccessMsg ["Total entries: " ++ (show n)]
+        showCount n = return $ OpSuccessMsg ["  Total entries: " ++ (show n)]
 
         outputEntry :: String -> IO ()
-        outputEntry = putStrLn -- TODO
+        outputEntry str = putStrLn $ beautifiedName ++ " " ++ path
+            where
+                w = words str
+                name = head w
+                path = unwords $ tail w
+                -- i assume that 20 chars for name will be quite enough
+                pad = 20 - (length name)
+                padP = if pad < 0 then 0 else pad 
+                beautifiedName = name ++ (replicate padP ' ')
 
 loopFile :: Handle -> (String -> IO ()) -> IO Int
 loopFile = loop 0
