@@ -2,6 +2,7 @@ module PjErr
     ( OperationResult (..)
     , getExitCode
     , execute
+    , execInvCmd
     ) where
 
 import System.Exit
@@ -36,3 +37,6 @@ getExitCode (OpInvalidCommand cmd) = do
 
 execute :: IO OperationResult -> IO ()
 execute f = f >>= getExitCode >>= exitWith
+
+execInvCmd :: String -> IO ()
+execInvCmd cmd = getExitCode (OpInvalidCommand cmd) >>= exitWith

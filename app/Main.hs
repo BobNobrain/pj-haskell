@@ -12,16 +12,15 @@ main = do
 
 parseArgs :: [String] -> IO ()
 
--- TODO: remove pjinc
 parseArgs ("add":name:path:[])          = execute $ pjadd name path
 parseArgs ("add":[])                    = parseArgs ("add":"--help":[])
 parseArgs ("add":"help":[])             = parseArgs ("add":"--help":[])
 parseArgs ("add":"--help":[])           = printHelp "add"
-parseArgs ("add":_)                     = pjinc ["add"]
+parseArgs ("add":_)                     = execInvCmd "add"
 
 parseArgs ("rm":"--help":[])            = printHelp "rm"
-parseArgs ("rm":names)                  = execute $ pjrm names
-parseArgs ("rm":_)                      = pjinc ["rm"]
+parseArgs ("rm":n:ns)                   = execute $ pjrm (n:ns)
+parseArgs ("rm":_)                      = execInvCmd "rm"
 
 parseArgs ("list":[])                   = execute pjlist
 parseArgs ("list":"--help":[])          = printHelp "list"
@@ -31,4 +30,4 @@ parseArgs ("--help":[])                 = printHelp ""
 
 parseArgs (name:[])                     = execute $ pjget name
 
-parseArgs _                             = pjinc []
+parseArgs _                             = execInvCmd ""
