@@ -94,10 +94,10 @@ pjadd name path =
 
 
 -- removes one or more entries from pj file
-pjrm :: [String] -> IO ()
+pjrm :: [String] -> IO OperationResult
 pjrm names = do
     n <- modifyConfig $ modifier names
-    putStrLn $ "Removed entries: " ++ (show n)
+    return $ OpSuccessMsg ["Removed entries: " ++ (show n)]
         where
             modifier :: [String] -> Modifier
             modifier [] str = WriteUnmodified str
