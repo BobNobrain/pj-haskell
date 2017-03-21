@@ -7,7 +7,7 @@ module PjFunc
 
 import System.Path.NameManip (guess_dotdot, absolute_path)
 import System.FilePath (addTrailingPathSeparator, normalise)
-import System.Directory (getHomeDirectory, doesFileExist, copyFile, removeFile)
+import System.Directory (getHomeDirectory, doesFileExist, copyFile, removeFile, doesDirectoryExist)
 import System.IO hiding (readFile)
 import System.Exit
 import Data.Maybe (fromJust)
@@ -69,6 +69,11 @@ pjadd name path =
     if validateName name then do
         -- check if we are modifying existing entry or adding new one
         aPath <- absolutize path
+        isDir <- doesDirectoryExist aPath
+        if not isDir then
+            putStrLn "Warning: specified path is not a directory!"
+        else
+            return ()
         let
             modifier :: String -> String -> Modifier
             modifier name path str
