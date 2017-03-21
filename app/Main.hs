@@ -12,7 +12,7 @@ main = do
 parseArgs :: [String] -> IO ()
 
 parseArgs ("add":name:path:[])          = pjadd name path
-parseArgs ("add":[])                    = parseArgs ("add":"--help0":[])
+parseArgs ("add":[])                    = parseArgs ("add":"--help":[])
 parseArgs ("add":"help":[])             = parseArgs ("add":"--help":[])
 parseArgs ("add":"--help":[])           = printHelp "add"
 parseArgs ("add":_)                     = pjinc ["add"]
