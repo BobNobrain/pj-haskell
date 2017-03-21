@@ -53,13 +53,13 @@ pjadd :: String -> String -> IO ()
 pjadd name path =
     if validateName name then do
         -- check if we are modifying existing entry or adding new one
+        aPath <- absolutize path
         let
             modifier :: String -> String -> Modifier
             modifier name path str
                 | head (words str) == name = Write (name ++ " " ++ path)
                 | otherwise = WriteUnmodified str
-        modifiedCount <- modifyConfig $ modifier name path
-        aPath <- absolutize path
+        modifiedCount <- modifyConfig $ modifier name aPath
 
         if modifiedCount == 0 then do
             -- there were no previous entry about $name
@@ -132,7 +132,7 @@ modifyConfig modifier = do
     tempFileH <- openFile pjTemp ReadMode
     pjFileH <- openFile pjFile WriteMode
     -- main loop here: line-by-line reading and writing
-    n <- loop 0 pjFileH tempFileH modifier
+    n <- loop 0 tempFileH pjFileH modifier
     -- resource freeing
     hClose tempFileH
     hClose pjFileH
@@ -153,8 +153,8 @@ modifyConfig modifier = do
                             modify :: Int -> Handle -> Modification -> IO Int
                             modify n fileW Skip = return (n + 1)
                             modify n fileW (WriteUnmodified s) = do
-                                hPutStr fileW s
+                                hPutStrLn fileW s
                                 return n
                             modify n fileW (Write s) = do
-                                hPutStr fileW s
+                                hPutStrLn fileW s
                                 return (n + 1)
