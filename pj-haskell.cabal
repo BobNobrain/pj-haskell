@@ -17,6 +17,7 @@ library
   hs-source-dirs:      src
   exposed-modules:     PjFunc
                      , PjHelp
+                     , PjErr
   build-depends:       base >= 4.7 && < 5
                      , MissingH
                      , directory
