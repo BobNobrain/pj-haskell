@@ -22,7 +22,23 @@ stack install
 Next, add this to your `~/.bashrc` file:
 
 ```bash
-# (TODO)
+pj_exe_path=~/.local/bin/pj-haskell-exe
+pj () {
+    pj_output=$("$pj_exe_path" $*)
+    pj_exit_code=$?
+    if [[ ( "$pj_exit_code" -eq 0 ) && ( $(echo "$pj_output" | wc -l) -eq 1 ) && ( "$pj_output" == /* ) ]]; then
+        if [ -d "$pj_output" ]; then
+            cd "$pj_output"
+            return 0
+        else
+            echo "$pj_output" "is not a directory!"
+            return 2
+        fi
+    else
+        echo "$pj_output"
+        return $pj_exit_code
+    fi
+}
 ```
 
 ## Usage
@@ -38,6 +54,14 @@ Available commands are:
 - `pj rm &lt;name1&gt;[, &lt;name2&gt;[, ...]]` - removes labels with given names;
 - `pj list` - lists all available labels;
 - `pj &lt;name&gt;` - if `pj` is added to your `~/.bashrc` as described in _Installation_, will change your working directory to the one that was labelled &lt;name&gt;.
+
+## Exit codes
+
+- `0`: successfully done the command
+- `2`: label path is not a directory
+- `4`: given project name is invalid
+- `8`: there is no label with given name
+- `16`: incorrect usage of a command (wrong arguments count, etc.)
 
 ## Additional info
 

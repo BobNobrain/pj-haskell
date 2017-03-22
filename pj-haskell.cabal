@@ -10,7 +10,7 @@ maintainer:          imaginarius.nik@yandex.ru
 copyright:           2017 BobNobrain
 category:            Web
 build-type:          Simple
-extra-source-files:  README.md
+extra-source-files:  Readme.md
 cabal-version:       >=1.10
 
 library
