@@ -47,10 +47,10 @@ pjget :: String -> IO OperationResult
 pjget name = do
     if validateName name then
         let
-            callback :: String -> String -> IO ()
+            callback :: String -> String -> IO Bool
             callback name str
-                | name == str_name = putStrLn str_path
-                | otherwise = return ()
+                | name == str_name = putStrLn str_path >> return True
+                | otherwise = return False
                     where
                         w = words str
                         str_name = head w
@@ -119,8 +119,8 @@ pjlist = (outputEntry "NAME PATH") >> (openConfig ReadWriteMode) >>= loopFile' >
         showCount :: Int -> IO OperationResult
         showCount n = return $ OpSuccessMsg ["  Total entries: " ++ (show n)]
 
-        outputEntry :: String -> IO ()
-        outputEntry str = putStrLn $ beautifiedName ++ " " ++ path
+        outputEntry :: String -> IO Bool
+        outputEntry str = (putStrLn $ beautifiedName ++ " " ++ path) >> return True
             where
                 w = words str
                 name = head w
@@ -130,10 +130,10 @@ pjlist = (outputEntry "NAME PATH") >> (openConfig ReadWriteMode) >>= loopFile' >
                 padP = if pad < 0 then 0 else pad 
                 beautifiedName = name ++ (replicate padP ' ')
 
-loopFile :: Handle -> (String -> IO ()) -> IO Int
+loopFile :: Handle -> (String -> IO Bool) -> IO Int
 loopFile = loop 0
     where
-        loop :: Int -> Handle -> (String -> IO ()) -> IO Int
+        loop :: Int -> Handle -> (String -> IO Bool) -> IO Int
         loop n fileH callback = do
             isEOF <- hIsEOF fileH
             if isEOF then do
@@ -141,8 +141,8 @@ loopFile = loop 0
                 return n
             else do
                 str <- hGetLine fileH
-                callback str
-                loop (n + 1) fileH callback
+                result <- callback str
+                loop (if result then n + 1 else n) fileH callback
 
 
 validateName :: String -> Bool
