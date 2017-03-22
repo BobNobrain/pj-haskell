@@ -45,15 +45,15 @@ pj () {
 
 ```bash
 pj --help # prints usage and short commands description
-pj &lt;cmd&gt; --help # prints command description
+pj <cmd> --help # prints command description
 ```
 
 Available commands are:
 
-- `pj add &lt;name&gt; &lt;path&gt;` - creates a new label with name &lt;name&gt;, pointing to directory at &lt;path&gt;;
-- `pj rm &lt;name1&gt;[, &lt;name2&gt;[, ...]]` - removes labels with given names;
+- `pj add <name> <path>` - creates a new label with name &lt;name&gt;, pointing to directory at &lt;path&gt;;
+- `pj rm <name1>[ <name2>[ ...]]` - removes labels with given names;
 - `pj list` - lists all available labels;
-- `pj &lt;name&gt;` - if `pj` is added to your `~/.bashrc` as described in _Installation_, will change your working directory to the one that was labelled &lt;name&gt;.
+- `pj <name>` - if `pj` is added to your `~/.bashrc` as described in _Installation_, will change your working directory to the one that was labelled &lt;name&gt;.
 
 ## Exit codes
 
